@@ -1,0 +1,40 @@
+<mat-drawer-container class="container-drawer">
+    <mat-drawer #drawer class="sidenav" mode="side">
+        <button color="primary" mat-button routerLink="/customers">
+          <mat-icon>folder_shared</mat-icon> Teams
+        </button>
+
+    </mat-drawer>
+    <div class="sidenav-content">
+      <mat-toolbar color="primary">
+        <mat-toolbar-row>
+          <button mat-icon-button (click)="drawer.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
+  
+          <span>Open DMS</span>
+          <span class="spacer"></span>
+          <!-- <mat-icon>favorite</mat-icon> -->
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <!-- <button mat-menu-item>
+              <mat-icon>publish</mat-icon>
+              <span>Share</span>
+            </button>
+            <button mat-menu-item disabled>
+              <mat-icon>mode_comment</mat-icon>
+              <span>Comment</span>
+            </button> -->
+            <button mat-menu-item>
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-container>

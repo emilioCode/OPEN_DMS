@@ -14,3 +14,24 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.container{
+  margin: 5px 100px 0px 100px;
+}
+
+.example-spacer{
+  flex: 1 1 auto;
+}
+
+.with{
+  width: 80%;
+}
+
+.bg-document{
+  background-image: url('./assets/img/pexels-mike-1181772.jpg');
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
