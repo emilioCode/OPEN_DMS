@@ -13,10 +13,10 @@ namespace OPEN_DMS.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly OPEN_DMSContext context;
-        public LoginController(OPEN_DMSContext _context)
+        private readonly OPEN_DMSContext _context;
+        public LoginController(OPEN_DMSContext context)
         {
-            this.context = _context;
+            this._context = context;
         }
 
         // POST: api/Login
@@ -24,17 +24,20 @@ namespace OPEN_DMS.Controllers
         public JsonResult Post([FromBody] User loginUser)
         {
            
-            var users = from user in context.Users
-                        join team in context.Teams on user.TeamId equals team.Id
+            var users = from user in _context.Users
+                        join team in _context.Teams on user.TeamId equals team.Id
+                        join entity in _context.Entities on user.EntityId equals entity.Id
                         where user.UserAccount == loginUser.UserAccount
                         //&& (Security.checkHash(loginUser.UserPassword, user.UserPassword, Security.hashType.MD5) == true)
                         && user.UserPassword == Security.getHash(loginUser.UserPassword, Security.hashType.MD5)
-                        && team.Id == user.TeamId && user.Disabled == false && (team.Disabled == false || user.AccessLevel == "ROOT")
+                        && team.Id == user.TeamId && user.Disabled == false && ( (team.Disabled == false && entity.Disabled == false) || user.AccessLevel == "ROOT")
                         select new
                         {
                             id = user.Id,
                             name = user.CompleteName,
                             accessLevel = user.AccessLevel,
+                            entityId = user.EntityId,
+                            entityName = entity.EntityName,
                             teamId = user.TeamId,
                             teamName = team.TeamName,
                             userName = user.UserAccount,
@@ -46,7 +49,7 @@ namespace OPEN_DMS.Controllers
             var usersList = users.ToList();
             usersList.ForEach(e =>
             {
-                if ((e.userName.Equals(loginUser.UserAccount)) && e.expirationDate <= DateTime.Today) userFinal = e;
+                if ((e.userName.Equals(loginUser.UserAccount)) && DateTime.Today <= e.expirationDate) userFinal = e;
             });
 
             return new JsonResult(userFinal);

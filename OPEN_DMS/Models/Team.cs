@@ -8,6 +8,7 @@ namespace OPEN_DMS.Models
     public partial class Team
     {
         public int Id { get; set; }
+        public int EntityId { get; set; }
         public string TeamName { get; set; }
         public string PathRoot { get; set; }
         public string TelephoneNumber { get; set; }

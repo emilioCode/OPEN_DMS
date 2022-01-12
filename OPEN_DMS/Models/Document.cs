@@ -12,6 +12,7 @@ namespace OPEN_DMS.Models
         public string Extension { get; set; }
         public float Size { get; set; }
         public int TeamId { get; set; }
+        public int EntityId { get; set; }
         public DateTime InsertionDate { get; set; }
         public string PathAlternative { get; set; }
         public string CommentDetail { get; set; }

@@ -1,7 +1,17 @@
 CREATE DATABASE OPEN_DMS;
 
+USE OPEN_DMS;
+
+CREATE TABLE ENTITIES(
+	id int NOT NULL AUTO_INCREMENT,
+    entityName varchar(50) NOT NULL,
+    disabled boolean NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE TEAMS(
 	id int NOT NULL AUTO_INCREMENT,
+    entityId int NOT NULL,
     teamName varchar(50) NOT NULL,
     pathRoot text NOT NULL,
 	telephoneNumber varchar(50) NULL,
@@ -19,7 +29,8 @@ CREATE TABLE USERS(
     description text NULL,
     userAccount varchar(20) NOT NULL,
     userPassword varchar(80) NOT NULL,
-    teamId int NOT NULL,
+    teamId int NULL,
+    entityId int NOT NULL,
     accessLevel varchar(20) NULL,
 	createdDate date NOT NULL,
     expirationDate date NOT NULL,
@@ -33,6 +44,7 @@ CREATE TABLE DOCUMENTS(
     extension varchar(5) NOT NULL,
     size float NOT NULL,
     teamId int NOT NULL,
+    entityId int NOT NULL,
     insertionDate date NOT NULL,
     pathAlternative text NULL,
     commentDetail text NULL,

@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit{
     ) { }
 
   ngOnInit(): void {
-    this.commonService.route.navigate(['dashboard']);
+    // this.commonService.route.navigate(['dashboard']);
     this.form = this.formBuilder.group({
       user: ['', Validators.required],
       password: ['', Validators.required]

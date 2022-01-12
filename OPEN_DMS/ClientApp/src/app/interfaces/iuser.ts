@@ -4,7 +4,8 @@ export interface IUser {
     Description?: string
     UserAccount?: string
     UserPassword?: string
-    TeamId?: number
+    TeamId?: number,
+    Entityd?: number,
     AccessLevel?: string
     CreatedDate?: Date
     ExpirationDate?: Date

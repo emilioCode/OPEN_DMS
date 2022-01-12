@@ -18,6 +18,7 @@ namespace OPEN_DMS.Models
         }
 
         public virtual DbSet<Document> Documents { get; set; }
+        public virtual DbSet<Entity> Entities { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
@@ -46,6 +47,10 @@ namespace OPEN_DMS.Models
 
                 entity.Property(e => e.DistinctDetail).HasColumnName("distinctDetail");
 
+                entity.Property(e => e.EntityId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("entityId");
+
                 entity.Property(e => e.Extension)
                     .IsRequired()
                     .HasMaxLength(5)
@@ -73,6 +78,22 @@ namespace OPEN_DMS.Models
                     .HasColumnName("teamId");
             });
 
+            modelBuilder.Entity<Entity>(entity =>
+            {
+                entity.ToTable("entities");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Disabled).HasColumnName("disabled");
+
+                entity.Property(e => e.EntityName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("entityName");
+            });
+
             modelBuilder.Entity<Team>(entity =>
             {
                 entity.ToTable("teams");
@@ -86,6 +107,10 @@ namespace OPEN_DMS.Models
                 entity.Property(e => e.Email)
                     .HasMaxLength(50)
                     .HasColumnName("email");
+
+                entity.Property(e => e.EntityId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("entityId");
 
                 entity.Property(e => e.HostName)
                     .HasMaxLength(30)
@@ -137,6 +162,10 @@ namespace OPEN_DMS.Models
                 entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.Property(e => e.Disabled).HasColumnName("disabled");
+
+                entity.Property(e => e.EntityId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("entityId");
 
                 entity.Property(e => e.ExpirationDate)
                     .HasColumnType("date")
