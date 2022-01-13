@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OPEN_DMS.Models;
 
 namespace OPEN_DMS
 {
@@ -21,6 +22,15 @@ namespace OPEN_DMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // to avoid the format propierties wthe the controller return the response
+            services.AddControllers()
+               .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+
+            //now, i creating a scope with the dbLibraryContext
+            services.AddScoped<OPEN_DMSContext, OPEN_DMSContext>();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
