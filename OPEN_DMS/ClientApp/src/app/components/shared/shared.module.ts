@@ -17,6 +17,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
@@ -29,6 +33,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCheckboxModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
@@ -37,6 +42,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatMenuModule,
     MatTableModule,
     MatPaginatorModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatGridListModule,
   ],
   exports:[
     CommonModule,
@@ -47,6 +55,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCheckboxModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
@@ -55,6 +64,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatMenuModule,
     MatTableModule,
     MatPaginatorModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatGridListModule,
   ]
 })
 export class SharedModule { }

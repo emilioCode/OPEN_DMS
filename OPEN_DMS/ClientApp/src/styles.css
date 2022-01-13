@@ -40,3 +40,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .container-dashboard{
   margin: 5px 50px 0px 50px;
 }
+
+
+/* chechBox */
+.example-h2 {
+  margin: 10px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
+}

@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OPEN_DMS.Models.Data
+namespace OPEN_DMS.Utils
 {
     public class Security
     {

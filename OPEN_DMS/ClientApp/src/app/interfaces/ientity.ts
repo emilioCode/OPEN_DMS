@@ -1,5 +1,5 @@
 export interface IEntity {
-    id?: number
-    entityName?: string
-    disabled?: boolean
+    Id?: number
+    EntityName?: string
+    Disabled?: boolean
 }

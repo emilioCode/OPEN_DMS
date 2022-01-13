@@ -1,5 +1,12 @@
 <div class="container-dashboard">
 
+  <mat-toolbar>
+    <span> <mat-icon>group_work</mat-icon> Entity</span>
+    <div class="example-spacer"></div>
+    <button mat-stroked-button color="primary" (click)="openDialog(element, 'create')">
+      <span class="material-icons">add</span>
+    </button>
+  </mat-toolbar>
 
     <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
@@ -9,34 +16,40 @@
         <table mat-table [dataSource]="dataSource" matSort>
       
           <!-- ID Column -->
-          <ng-container matColumnDef="id">
+          <ng-container matColumnDef="Id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-            <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.Id}} </td>
           </ng-container>
       
           <!-- Progress Column -->
-          <ng-container matColumnDef="entityName">
+          <ng-container matColumnDef="EntityName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> EntityName </th>
-            <td mat-cell *matCellDef="let row"> {{row.entityName}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.EntityName}} </td>
           </ng-container>
       
           <!-- Name Column -->
-          <ng-container matColumnDef="disabled">
+          <ng-container matColumnDef="Disabled">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Disabled </th>
-            <td mat-cell *matCellDef="let row"> {{row.disabled}} </td>
+            <td mat-cell *matCellDef="let row"> 
+               <mat-icon style="color: rgb(89, 201, 113)" *ngIf="row.Disabled">done</mat-icon>
+               <mat-icon style="color: rgb(235, 111, 95)" *ngIf="!row.Disabled">do_not_disturb_on</mat-icon>
+            </td>
           </ng-container>
       
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element; let i = index" style="text-align: right;">  
-                <a class="pointer" style="color:  rgb(13, 127, 202);" matTooltip="see User" (click)="openDialog(element)">
+                <a class="pointer" style="color:  rgb(13, 127, 202);" matTooltip="see Entity" (click)="openDialog(element)">
                     <mat-icon>search</mat-icon>
-                </a>
+                </a>   
                 <a class="pointer" style="color: green;" matTooltip="modify Entity" (click)="openDialog(element, 'edit')">
                     <mat-icon>edit</mat-icon>
                 </a>
-                <a class="pointer" style="color: red;" matTooltip="disable Entity" (click)="openDialog(element, 'delete')">
-                    <mat-icon>delete</mat-icon>
+                <a class="pointer" *ngIf="element.Disabled" style="color: rgb(168, 166, 173);" matTooltip="enable Entity" (click)="openDialog(element, 'delete')">
+                    <mat-icon>undo</mat-icon>
+                </a>
+                <a class="pointer" *ngIf="!element.Disabled" style="color: rgb(168, 166, 173);" matTooltip="disable Entity" (click)="openDialog(element, 'delete')">
+                  <mat-icon>disabled_visible</mat-icon>
                 </a>
             </td>
         </ng-container>

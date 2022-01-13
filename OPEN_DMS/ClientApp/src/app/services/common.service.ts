@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SessionStorageService } from 'ngx-webstorage';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +57,13 @@ export class CommonService {
       });
     }
   }
+
+  // Http Services
+  getData(api: string, data: string): Observable<any> {
+    return this.http.get(this.baseUrl + api + data);
+  }
   
+  postData(api: string, data: any): Observable<any> {
+    return this.http.post(this.baseUrl + api, data);
+  }
 }

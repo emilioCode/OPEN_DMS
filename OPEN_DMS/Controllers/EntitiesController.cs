@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OPEN_DMS.Models;
+using OPEN_DMS.Models.Data;
+using OPEN_DMS.Utils;
 
 namespace OPEN_DMS.Controllers
 {
@@ -22,93 +24,78 @@ namespace OPEN_DMS.Controllers
 
         // GET: api/Entities
         [HttpGet("{entityId}/{accessLevel}")]
-        public async Task<ActionResult<IEnumerable<Entity>>> GetEntities(int entityId, string accessLevel)
+        public async Task<ActionResult<object>> GetEntities(int entityId, string accessLevel)
         {
+            genericJsonResponse response = new();
             List<Entity> entities = new();
             try
             {
                 switch (accessLevel)
                 {
-                    case "ROOT":
+                    case CONSTANT.ROOT:
                         entities = await _context.Entities.ToListAsync();
                         break;
-                    case "ADMINISTRATOR":
-                        entities = await _context.Entities.Where(e => e.Id == entityId).ToListAsync();
-                        break;
                     default:
+                        entities = await _context.Entities.Where(e => e.Id == entityId && e.Disabled == false).ToListAsync();
                         break;
                 }
-                
+                response.success = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
+                response.message = ex.Message;
             }
-            return entities;
-        }
-
-
-        // PUT: api/Entities/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEntity(int id, Entity entity)
-        {
-            if (id != entity.Id)
+            finally
             {
-                return BadRequest();
+                response.data = entities;
             }
-
-            _context.Entry(entity).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EntityExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return response;
         }
 
         // POST: api/Entities
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Entity>> PostEntity(Entity entity)
+        public async Task<ActionResult<object>> PostEntity([FromBody] genericJsonRequest request)
         {
-            _context.Entities.Add(entity);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEntity", new { id = entity.Id }, entity);
-        }
-
-        // DELETE: api/Entities/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEntity(int id)
-        {
-            var entity = await _context.Entities.FindAsync(id);
-            if (entity == null)
+            genericJsonResponse response = new();
+            Entity entityParsed = (Entity)JSON.Parse<Entity>(request.stringify);
+            Entity entity;
+            try
             {
-                return NotFound();
+                response.success = true;
+                switch (request.operation)
+                {
+                    case CONSTANT.CREATE:
+                        await _context.Entities.AddAsync(entityParsed);
+                        response.message = "created: done";
+                        break;
+
+                    case CONSTANT.EDIT:
+                        entity = await _context.Entities.FindAsync(entityParsed.Id);
+                        entity.EntityName = entityParsed.EntityName;
+                        entity.Disabled = entityParsed.Disabled;
+                        _context.Entry(entity).State = EntityState.Modified;
+                        response.message = "edited: done";
+                        break;
+
+                    case CONSTANT.DELETE:
+                        entity = await _context.Entities.FindAsync(entityParsed.Id);
+                        entity.Disabled = !entity.Disabled;
+                        _context.Entry(entity).State = EntityState.Modified;
+                        response.message = "deleted: done";
+                        break;
+
+                    default:
+                        response.success = false;
+                        break;
+                }
+                if(response.success) await _context.SaveChangesAsync();
             }
-
-            _context.Entities.Remove(entity);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
 
-        private bool EntityExists(int id)
-        {
-            return _context.Entities.Any(e => e.Id == id);
-        }
     }
 }

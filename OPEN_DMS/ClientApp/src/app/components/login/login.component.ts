@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit{
     ) { }
 
   ngOnInit(): void {
-    // this.commonService.route.navigate(['dashboard']);
     this.form = this.formBuilder.group({
       user: ['', Validators.required],
       password: ['', Validators.required]
@@ -38,17 +37,15 @@ export class LoginComponent implements OnInit{
     
     this.userService.loginUser(user)
       .subscribe(res => {
-        if(res !== undefined && res !== null && res !== '' ){
-          this.commonService.sessionStorage.set("user", res );
-          this.commonService.route.navigate(['dashboard']);
+        if(res.success){
+            this.commonService.sessionStorage.set("user", res.data);
+            this.commonService.route.navigate(['dashboard']);
         }else{
-          this.modalMessageService.error('Please check the user and password and try it again.\nIf the issue continues contact to the administrator.','');
+          this.modalMessageService.error(res.message);
         }
-      },error => {
-        this.modalMessageService.error('Error: Please contact to the administrator.','');
+      }, error => {
+        this.modalMessageService.error(error);
       });
-    
-      
   }
  
 }

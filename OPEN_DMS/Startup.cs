@@ -23,6 +23,11 @@ namespace OPEN_DMS
         {
             services.AddControllersWithViews();
 
+            // to avoid the format propierties wthe the controller return the response
+            services.AddControllers()
+               .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+
             //now, i creating a scope with the dbLibraryContext
             services.AddScoped<OPEN_DMSContext, OPEN_DMSContext>();
 

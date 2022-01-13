@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { EntityComponent } from './entity/entity.component';
+import { EntityDialogComponent } from './entity/entity-dialog/entity-dialog.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, children:[
@@ -12,17 +13,20 @@ const routes: Routes = [
   ]}
 ];
 
-
 @NgModule({
   declarations:[
     DashboardComponent,
     HomeComponent,
     EntityComponent,
+    EntityDialogComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
     SharedModule,
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  entryComponents: [
+    EntityDialogComponent
+  ]
 })
 export class DashboardRoutingModule { }
