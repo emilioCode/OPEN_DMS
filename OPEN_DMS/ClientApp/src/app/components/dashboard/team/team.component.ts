@@ -1,35 +1,47 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import { IEntity } from './../../../interfaces/ientity';
-import { Observable } from 'rxjs';
-import { EntityDialogComponent } from './entity-dialog/entity-dialog.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
+import { ITeam } from 'src/app/interfaces/iteam';
 import { CommonService } from 'src/app/services/common.service';
 import { ModalMessageService } from 'src/app/services/modal-message.service';
+import { TeamDialogComponent } from './team-dialog/team-dialog.component';
 
 @Component({
-  selector: 'app-entity',
-  templateUrl: './entity.component.html',
-  styleUrls: ['./entity.component.css']
+  selector: 'app-team',
+  templateUrl: './team.component.html',
+  styleUrls: ['./team.component.css']
 })
-export class EntityComponent implements OnInit {
-  entities$: Observable<any>;
-  columnsToDisplay: string[] = ['Id', 'EntityName', 'Disabled', 'actions'];
+export class TeamComponent implements OnInit {
+  teams$: Observable<any>;
+  columnsToDisplay: string[] = [
+    'Id', 
+    // 'EntityId', 
+    'TeamName', 
+    'PathRoot', 
+    // 'TelephoneNumber', 
+    // 'HostName', 
+    // 'PortNumber', 
+    // 'Email', 
+    // 'Pass', 
+    // 'Disabled', 
+    'actions'
+  ];
   dataSource!: MatTableDataSource<any>;
-
+  
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-
+  
   constructor(
     private commonService: CommonService, 
     private modalMessageService: ModalMessageService,
     public dialog: MatDialog
-    ) { }
+  ) { }
 
   ngOnInit() {
-    this.getEntities();
+    this.getTeams();
   }
 
   applyFilter(filterValue: string) {
@@ -46,11 +58,11 @@ export class EntityComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  getEntities(){
+  getTeams(){
     const session = this.commonService.sessionStorage.get("user");
-    const data = `/${(session.entityId? session.entityId: 0)}/${session.accessLevel? session.accessLevel: "NONE"}`;
-    this.entities$ =  this.commonService.getData("api/Entities", data)
-    this.entities$.subscribe(res => {
+    const data = `?entityid=${session.entityId}`;
+    this.teams$ =  this.commonService.getData("api/Teams", data)
+    this.teams$.subscribe(res => {
       if(res.success){
         this.setDataSource(res.data);
       }else{
@@ -62,19 +74,16 @@ export class EntityComponent implements OnInit {
     });
   }
 
-  openDialog = (element: IEntity, action: string = 'read'): void => {
-    const dialogRef = this.dialog.open(EntityDialogComponent, {
-      height: '220px',
-      width: '500px',
+  openDialog = (element: ITeam, action: string = 'read'): void => {
+    const dialogRef = this.dialog.open(TeamDialogComponent, {
+      height: '530px',
+      width: '600px',
       data: { element, action }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result)this.getEntities();
+      if(result)this.getTeams();
     }); 
   }
 
-
 }
-
-

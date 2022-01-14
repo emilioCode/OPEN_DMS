@@ -57,7 +57,7 @@ namespace OPEN_DMS.Controllers
         public async Task<ActionResult<object>> PostEntity([FromBody] genericJsonRequest request)
         {
             genericJsonResponse response = new();
-            Entity entityParsed = (Entity)JSON.Parse<Entity>(request.stringify);
+            Entity entityParsed = JSON.Parse<Entity>(request.stringify);
             Entity entity;
             try
             {

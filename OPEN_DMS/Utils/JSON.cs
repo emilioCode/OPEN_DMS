@@ -13,7 +13,7 @@ namespace OPEN_DMS.Utils
             return JsonSerializer.Serialize(value);
         }
 
-        public static object Parse<T>(string json, JsonSerializerOptions options = null) where T: new()
+        public static T Parse<T>(string json, JsonSerializerOptions options = null) where T: new()
         {
             return JsonSerializer.Deserialize<T>(json, options);
         }

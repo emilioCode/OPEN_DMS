@@ -1,0 +1,71 @@
+<div class="container-dashboard">
+
+    <mat-toolbar>
+        <span> <mat-icon>folder_shared</mat-icon> Teams</span>
+        <div class="example-spacer"></div>
+        <button mat-stroked-button color="primary" (click)="openDialog(element, 'create')">
+          <span class="material-icons">add</span>
+        </button>
+    </mat-toolbar>
+
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+      
+          <!-- ID Column -->
+          <ng-container matColumnDef="Id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+            <td mat-cell *matCellDef="let row"> {{row.Id}} </td>
+          </ng-container>
+          
+            <!-- TeamName Column -->
+            <ng-container matColumnDef="TeamName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> TeamName </th>
+              <td mat-cell *matCellDef="let row"> {{row.TeamName}} </td>
+            </ng-container>
+            
+            <!-- PathRoot Column -->
+            <ng-container matColumnDef="PathRoot">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> PathRoot </th>
+                <td mat-cell *matCellDef="let row"> {{row.PathRoot}} </td>
+            </ng-container>
+
+            <!-- Disabled Column -->
+            <ng-container matColumnDef="Disabled">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Disabled </th>
+                <td mat-cell *matCellDef="let row"> 
+                    <mat-icon style="color: rgb(89, 201, 113)" *ngIf="row.Disabled">done</mat-icon>
+                    <mat-icon style="color: rgb(235, 111, 95)" *ngIf="!row.Disabled">do_not_disturb_on</mat-icon>
+                </td>
+            </ng-container>
+      
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let i = index" style="text-align: right;">  
+                <a class="pointer" style="color:  rgb(13, 127, 202);" matTooltip="see Team" (click)="openDialog(element)">
+                    <mat-icon>search</mat-icon>
+                </a>   
+                <a class="pointer" style="color: green;" matTooltip="modify Team" (click)="openDialog(element, 'edit')">
+                    <mat-icon>edit</mat-icon>
+                </a>
+                <a class="pointer" *ngIf="element.Disabled" style="color: rgb(168, 166, 173);" matTooltip="enable Team" (click)="openDialog(element, 'delete')">
+                    <mat-icon>undo</mat-icon>
+                </a>
+                <a class="pointer" *ngIf="!element.Disabled" style="color: rgb(168, 166, 173);" matTooltip="disable Team" (click)="openDialog(element, 'delete')">
+                  <mat-icon>disabled_visible</mat-icon>
+                </a>
+            </td>
+        </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsToDisplay;">
+          </tr>
+        </table>
+      
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+
+</div>
