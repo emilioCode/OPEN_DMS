@@ -3,6 +3,11 @@ export enum CONSTANT {
     ADMINISTRATOR = "ADMINISTRATOR",
     STANDART = "STANDART",
 
+    ACCESSLEVEL_ROOT = 3,
+    ACCESSLEVEL_ADMINISTRATOR = 2,
+    ACCESSLEVEL_STANDART = 1,
+    ACCESSLEVEL_NONE = 0,
+
     CREATE = "create",
     EDIT = "edit",
     DELETE = "delete",

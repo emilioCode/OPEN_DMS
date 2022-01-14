@@ -57,3 +57,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .example-margin {
   margin: 0 10px;
 }
+
+
+/* MatTable */
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}

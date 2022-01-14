@@ -2,12 +2,13 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { IEntity } from './../../../interfaces/ientity';
 import { Observable } from 'rxjs';
 import { EntityDialogComponent } from './entity-dialog/entity-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'src/app/services/common.service';
 import { ModalMessageService } from 'src/app/services/modal-message.service';
+import { Entity } from 'src/app/classes/entity';
+import { EntityService } from 'src/app/services/entity.service';
 
 @Component({
   selector: 'app-entity',
@@ -15,23 +16,23 @@ import { ModalMessageService } from 'src/app/services/modal-message.service';
   styleUrls: ['./entity.component.css']
 })
 export class EntityComponent implements OnInit {
-  entities$: Observable<any>;
-  
   columnsToDisplay: string[] = ['Id', 'EntityName', 'Disabled', 'actions'];
   dataSource!: MatTableDataSource<any>;
-
+  session: any; 
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(
     private commonService: CommonService, 
+    private entityService: EntityService, 
     private modalMessageService: ModalMessageService,
     public dialog: MatDialog
     ) { }
 
   ngOnInit() {
-    this.getEntities();
+    this.session = this.commonService.sessionStorage.get("user");
+    this.getEntities(this.session);
   }
 
   applyFilter(filterValue: string) {
@@ -42,17 +43,14 @@ export class EntityComponent implements OnInit {
     }
   }
 
-  getEntities(){
-    // this.entities$ =  this.entityService.getEntities("api/Entities","/0/ROOT")
-    //   this.entities$.subscribe(res => {
-    //     this.dataSource = new MatTableDataSource(res);
-    //     this.dataSource.paginator = this.paginator;
-    //     this.dataSource.sort = this.sort;
-    //   });
-    const session = this.commonService.sessionStorage.get("user");
-    const data = `/${(session.entityId? session.entityId: 0)}/${session.accessLevel? session.accessLevel: "NONE"}`;
-    this.entities$ =  this.commonService.getData("api/Entities", data)
-    this.entities$.subscribe(res => {
+  setDataSource(data: any){
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  getEntities(session: any): void{
+    this.entityService._get(session).subscribe(res => {
       if(res.success){
         this.setDataSource(res.data);
       }else{
@@ -61,27 +59,22 @@ export class EntityComponent implements OnInit {
       }
     },error => {
       this.setDataSource([]);
-      
     });
   }
 
-  openDialog = (element: IEntity, action: string = 'read'): void => {
+  openDialog = (element: Entity, action: string = 'read'): void => {
     const dialogRef = this.dialog.open(EntityDialogComponent, {
-      height: '300px',
+      height: '220px',
       width: '500px',
       data: { element, action }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result)this.getEntities();
+      if(result)this.getEntities(this.session);
     }); 
   }
 
-  setDataSource(data: any){
-    this.dataSource = new MatTableDataSource(data);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+
 }
 
 
