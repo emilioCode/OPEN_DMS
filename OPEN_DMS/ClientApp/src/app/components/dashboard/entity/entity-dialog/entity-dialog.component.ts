@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CONSTANT } from 'src/app/enums/CONSTANT';
-import { IEntity } from 'src/app/interfaces/ientity';
+import { Entity } from 'src/app/classes/entity';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -36,11 +36,11 @@ export class EntityDialogComponent implements OnInit {
   }
 
   handleSubmit(): void {
-    const request: IEntity = {
-      Id: Number(this.form.controls.Id.value),
-      EntityName: this.form.controls.EntityName.value,
-      Disabled: this.form.controls.Disabled.value,
-    }
+    const request: Entity = new Entity(
+      Number(this.form.controls.Id.value),
+      this.form.controls.EntityName.value,
+      this.form.controls.Disabled.value,
+    );
 
     const data = {
       operation: this.data.action,
@@ -61,11 +61,7 @@ export class EntityDialogComponent implements OnInit {
   swithOption(option: string){
     switch (option) {
       case CONSTANT.CREATE:
-        const init: IEntity = {
-          Id: 0,
-          EntityName: null,
-          Disabled: false
-        };
+        const init: Entity = new Entity(0, null, false);
         this.data.element =  init;
         this.textButton = "Create";
         this.colorButton = "primary";

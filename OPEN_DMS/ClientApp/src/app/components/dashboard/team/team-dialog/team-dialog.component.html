@@ -6,14 +6,19 @@
             <mat-grid-tile [colspan]="3" [rowspan]="1"> 
                 <mat-form-field appearance="legacy" class="with">
                     <mat-label>EntityName</mat-label>
-                    <input matInput autocomplete="off" formControlName="EntityId">
+                    <mat-select placeholder="Select" formControlName="EntityId" required>
+                        <mat-option>-- None --</mat-option>
+                        <ng-container *ngIf="entities$ | async as item">
+                            <mat-option *ngFor="let entity of item.data" [value]="entity.Id">{{ entity.EntityName }}</mat-option>
+                        </ng-container>
+                      </mat-select>
                 </mat-form-field>
             </mat-grid-tile>
 
             <mat-grid-tile [colspan]="3" [rowspan]="1"> 
                 <mat-form-field appearance="legacy" class="with">
                     <mat-label>TeamName</mat-label>
-                    <input matInput autocomplete="off" formControlName="TeamName">
+                    <input matInput autocomplete="off" formControlName="TeamName" required>
                 </mat-form-field>
             </mat-grid-tile>
 

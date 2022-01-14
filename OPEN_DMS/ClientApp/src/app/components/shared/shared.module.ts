@@ -21,6 +21,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [],
@@ -45,6 +46,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     MatTooltipModule,
     MatGridListModule,
+    MatSelectModule,
   ],
   exports:[
     CommonModule,
@@ -67,6 +69,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     MatTooltipModule,
     MatGridListModule,
+    MatSelectModule,
   ]
 })
 export class SharedModule { }

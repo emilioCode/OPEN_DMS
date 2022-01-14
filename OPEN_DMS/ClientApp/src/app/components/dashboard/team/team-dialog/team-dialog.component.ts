@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { CONSTANT } from 'src/app/enums/CONSTANT';
 import { ITeam } from 'src/app/interfaces/iteam';
 import { CommonService } from 'src/app/services/common.service';
+import { EntityService } from 'src/app/services/entity.service';
 
 @Component({
   selector: 'app-team-dialog',
@@ -16,15 +18,21 @@ export class TeamDialogComponent implements OnInit {
   colorButton: string = "";
   hide: boolean = true;
   isDisabled: boolean;
+  entities$: Observable<any>;
+  session: any; 
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder, 
     private dialogRef: MatDialogRef<any>,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private entityService: EntityService
   ) { }
 
   ngOnInit() {
+    this.session = this.commonService.sessionStorage.get("user");
     this.swithOption(this.data.action);
+    this.getEntities(this.session);
   }
 
   initializeModalForm(disabled: boolean = false): void {
@@ -78,7 +86,7 @@ export class TeamDialogComponent implements OnInit {
       case CONSTANT.CREATE:
         const init: ITeam = {
           Id: 0,
-          EntityId: null,
+          EntityId: Number(this.session.entityId),
           TeamName: null,
           PathRoot: null,
           TelephoneNumber: null,
@@ -124,6 +132,10 @@ export class TeamDialogComponent implements OnInit {
       this.isDisabled = disabled;
     }
 
+  }
+
+  getEntities(session: any): void{
+    this.entities$ =  this.entityService._get(session);
   }
 
 }
