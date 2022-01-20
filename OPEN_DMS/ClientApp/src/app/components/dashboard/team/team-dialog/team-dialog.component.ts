@@ -4,8 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { CONSTANT } from 'src/app/enums/CONSTANT';
 import { ITeam } from 'src/app/interfaces/iteam';
-import { CommonService } from 'src/app/services/common.service';
-import { EntityService } from 'src/app/services/entity.service';
+import { CommonService, EntityService } from 'src/app/services/index';
 
 @Component({
   selector: 'app-team-dialog',
