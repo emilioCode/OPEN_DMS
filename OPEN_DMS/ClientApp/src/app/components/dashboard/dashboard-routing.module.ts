@@ -7,12 +7,15 @@ import { EntityComponent } from './entity/entity.component';
 import { EntityDialogComponent } from './entity/entity-dialog/entity-dialog.component';
 import { TeamComponent } from './team/team.component';
 import { TeamDialogComponent } from './team/team-dialog/team-dialog.component';
+import { UserComponent } from './user/user.component';
+import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, children:[
     { path: '', component: HomeComponent },
     { path: 'entity', component: EntityComponent },
     { path: 'team', component: TeamComponent },
+    { path: 'user', component: UserComponent },
   ]}
 ];
 
@@ -21,9 +24,11 @@ const routes: Routes = [
     DashboardComponent,
     HomeComponent,
     EntityComponent,
-    EntityDialogComponent,
     TeamComponent,
+    UserComponent,
+    EntityDialogComponent,
     TeamDialogComponent,
+    UserDialogComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -33,6 +38,7 @@ const routes: Routes = [
   entryComponents: [
     EntityDialogComponent,
     TeamDialogComponent,
+    UserDialogComponent,
   ]
 })
 export class DashboardRoutingModule { }

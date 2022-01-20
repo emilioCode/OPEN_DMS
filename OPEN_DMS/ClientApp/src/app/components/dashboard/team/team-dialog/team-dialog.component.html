@@ -1,85 +1,83 @@
-<!-- <mat-card> -->
-    <form [formGroup]="form" (ngSubmit)="handleSubmit()">
-        <label>Team</label>
-        <mat-grid-list cols="6" >
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+    <label>Team</label>
+    <mat-grid-list cols="6" >
+    
+        <mat-grid-tile [colspan]="3" [rowspan]="1"> 
+            <mat-form-field appearance="legacy" class="with">
+                <mat-label>EntityName</mat-label>
+                <mat-select placeholder="Select" formControlName="EntityId" required>
+                    <mat-option>-- None --</mat-option>
+                    <ng-container *ngIf="entities$ | async as item">
+                        <mat-option *ngFor="let entity of item.data" [value]="entity.Id">{{ entity.EntityName }}</mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="3" [rowspan]="1"> 
+            <mat-form-field appearance="legacy" class="with">
+                <mat-label>TeamName</mat-label>
+                <input matInput autocomplete="off" formControlName="TeamName" required>
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="6" [rowspan]="1"> 
+            <mat-form-field appearance="legacy" class="with">
+                <mat-label>PathRoot</mat-label>
+                <input matInput autocomplete="off" formControlName="PathRoot">
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1"> 
+            <mat-form-field appearance="legacy" class="with">
+                <mat-label>TelephoneNumber</mat-label>
+                <input matInput autocomplete="off" formControlName="TelephoneNumber">
+                <mat-error *ngIf="form.get('TelephoneNumber').hasError('pattern')">Datos invalidos</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1"> 
+            <mat-form-field appearance="legacy" class="with">
+                <mat-label>HostName</mat-label>
+                <input matInput autocomplete="off" formControlName="HostName">
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1"> 
+            <mat-form-field appearance="legacy" class="with">
+                <mat-label>PortNumber</mat-label>
+                <input matInput autocomplete="off" type="number" formControlName="PortNumber">
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1"> 
+            <mat-form-field appearance="legacy" class="with">
+                <mat-label>Email</mat-label>
+                <input matInput autocomplete="off" formControlName="Email">
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1"> 
+            <mat-form-field appearance="legacy" class="with">
+                <mat-label>Password</mat-label>
+                <input matInput autocomplete="off" formControlName="Pass" [type]="hide  ? 'password' : 'text'">
+
+                <mat-icon *ngIf="!isDisabled" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2" [rowspan]="1"> 
+            <section class="example-section">
+                <mat-checkbox class="example-margin" formControlName="Disabled">Disabled</mat-checkbox>
+            </section>
+        </mat-grid-tile>
         
-            <mat-grid-tile [colspan]="3" [rowspan]="1"> 
-                <mat-form-field appearance="legacy" class="with">
-                    <mat-label>EntityName</mat-label>
-                    <mat-select placeholder="Select" formControlName="EntityId" required>
-                        <mat-option>-- None --</mat-option>
-                        <ng-container *ngIf="entities$ | async as item">
-                            <mat-option *ngFor="let entity of item.data" [value]="entity.Id">{{ entity.EntityName }}</mat-option>
-                        </ng-container>
-                      </mat-select>
-                </mat-form-field>
-            </mat-grid-tile>
+        <mat-grid-tile [colspan]="4" [rowspan]="1"> 
+            <button mat-raised-button style="margin-right: 1%;" mat-dialog-close>Return</button>
+            <button type="submit" mat-raised-button color="{{ colorButton }}" *ngIf="data.action != 'read'" [disabled]="form.invalid">{{ textButton }}</button>
+        </mat-grid-tile>
+    
+    </mat-grid-list>
 
-            <mat-grid-tile [colspan]="3" [rowspan]="1"> 
-                <mat-form-field appearance="legacy" class="with">
-                    <mat-label>TeamName</mat-label>
-                    <input matInput autocomplete="off" formControlName="TeamName" required>
-                </mat-form-field>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="6" [rowspan]="1"> 
-                <mat-form-field appearance="legacy" class="with">
-                    <mat-label>PathRoot</mat-label>
-                    <input matInput autocomplete="off" formControlName="PathRoot">
-                </mat-form-field>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1"> 
-                <mat-form-field appearance="legacy" class="with">
-                    <mat-label>TelephoneNumber</mat-label>
-                    <input matInput autocomplete="off" formControlName="TelephoneNumber">
-                    <mat-error *ngIf="form.get('TelephoneNumber').hasError('pattern')">Datos invalidos</mat-error>
-                </mat-form-field>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1"> 
-                <mat-form-field appearance="legacy" class="with">
-                    <mat-label>HostName</mat-label>
-                    <input matInput autocomplete="off" formControlName="HostName">
-                </mat-form-field>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1"> 
-                <mat-form-field appearance="legacy" class="with">
-                    <mat-label>PortNumber</mat-label>
-                    <input matInput autocomplete="off" type="number" formControlName="PortNumber">
-                </mat-form-field>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1"> 
-                <mat-form-field appearance="legacy" class="with">
-                    <mat-label>Email</mat-label>
-                    <input matInput autocomplete="off" formControlName="Email">
-                </mat-form-field>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1"> 
-                <mat-form-field appearance="legacy" class="with">
-                    <mat-label>Password</mat-label>
-                    <input matInput autocomplete="off" formControlName="Pass" [type]="hide  ? 'password' : 'text'">
-
-                    <mat-icon *ngIf="!isDisabled" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-
-                </mat-form-field>
-            </mat-grid-tile>
-
-            <mat-grid-tile [colspan]="2" [rowspan]="1"> 
-                <section class="example-section">
-                    <mat-checkbox class="example-margin" formControlName="Disabled">Disabled</mat-checkbox>
-                </section>
-            </mat-grid-tile>
-            
-            <mat-grid-tile [colspan]="4" [rowspan]="1"> 
-                <button mat-raised-button style="margin-right: 1%;" mat-dialog-close>Return</button>
-                <button type="submit" mat-raised-button color="{{ colorButton }}" *ngIf="data.action != 'read'" [disabled]="form.invalid">{{ textButton }}</button>
-            </mat-grid-tile>
-        
-        </mat-grid-list>
-
-    </form>
-<!-- </mat-card> -->
+</form>

@@ -1,35 +1,45 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { EntityDialogComponent } from './entity-dialog/entity-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { CommonService, ModalMessageService, EntityService } from 'src/app/services/index';
+import { Observable } from 'rxjs';
 import { Entity } from 'src/app/classes/entity';
+import { CommonService, UserService, EntityService, ModalMessageService } from 'src/app/services/index';
+import { User } from '../../../classes/user';
+import { UserDialogComponent } from './user-dialog/user-dialog.component';
 
 @Component({
-  selector: 'app-entity',
-  templateUrl: './entity.component.html',
-  styleUrls: ['./entity.component.css']
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.css']
 })
-export class EntityComponent implements OnInit {
-  columnsToDisplay: string[] = ['Id', 'EntityName', 'Disabled', 'actions'];
+export class UserComponent implements OnInit {
+  columnsToDisplay: string[] = [
+    'UserAccount',
+    'Description',
+    'TeamId',
+    'actions'
+  ];
   dataSource!: MatTableDataSource<any>;
+  entities$: Observable<Entity[]>;
   session: any; 
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-
+  
   constructor(
     private commonService: CommonService, 
     private entityService: EntityService, 
+    private userService: UserService,
     private modalMessageService: ModalMessageService,
     public dialog: MatDialog
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.session = this.commonService.sessionStorage.get("user");
-    this.getEntities(this.session);
+    this.entities$ = this.entityService._get(this.session);
+    this.getUsers(this.session);
   }
 
   applyFilter(filterValue: string) {
@@ -46,8 +56,8 @@ export class EntityComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  getEntities(session: any): void{
-    this.entityService._get(session).subscribe(res => {
+  getUsers(session: any): void{
+    this.userService._get(session).subscribe(res => {
       if(res.success){
         this.setDataSource(res.data);
       }else{
@@ -59,19 +69,17 @@ export class EntityComponent implements OnInit {
     });
   }
 
-  openDialog = (element: Entity, action: string = 'read'): void => {
-    const dialogRef = this.dialog.open(EntityDialogComponent, {
-      height: '220px',
-      width: '500px',
+  openDialog = (element: User, action: string = 'read'): void => {
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      height: '620px',
+      width: '600px',
       data: { element, action }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result)this.getEntities(this.session);
+      if(result)this.getUsers(this.session);
     }); 
   }
 
 
 }
-
-

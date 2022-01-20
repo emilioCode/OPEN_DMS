@@ -1,0 +1,71 @@
+<div class="container-dashboard">
+
+    <mat-toolbar>
+      <span> <mat-icon>manage_accounts</mat-icon> Manage Accounts</span>
+      <div class="example-spacer"></div>
+      <button mat-stroked-button color="primary" (click)="openDialog(element, 'create')">
+        <span class="material-icons">add</span>
+      </button>
+    </mat-toolbar>
+  
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- UserAccount Column -->
+        <ng-container matColumnDef="UserAccount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> UserAccount </th>
+          <td mat-cell *matCellDef="let row"> {{row.UserAccount}} </td>
+        </ng-container>
+
+        <!-- Description Column -->
+        <ng-container matColumnDef="Description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+          <td mat-cell *matCellDef="let row"> {{row.Description}} </td>
+        </ng-container>
+
+        <!-- TeamId Column -->
+        <ng-container matColumnDef="TeamId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span *ngIf="entities$ | async as item">
+              <span *ngFor="let entity of item.data">
+                <span *ngIf="entity.Id == row.TeamId">{{ entity.EntityName }}</span>
+              </span>
+            </span>
+          </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element; let i = index" style="text-align: right;">  
+              <a class="pointer" style="color:  rgb(230, 81, 36);" matTooltip="Change Password" (click)="openDialog(element, 'change_password')">
+                <mat-icon>password</mat-icon>
+              </a>   
+              <a class="pointer" style="color:  rgb(13, 127, 202);" matTooltip="see User" (click)="openDialog(element)">
+                  <mat-icon>search</mat-icon>
+              </a>   
+              <a class="pointer" style="color: green;" matTooltip="modify User" (click)="openDialog(element, 'edit')">
+                  <mat-icon>edit</mat-icon>
+              </a>
+              <a class="pointer" *ngIf="element.Disabled" style="color: rgb(168, 166, 173);" matTooltip="enable User" (click)="openDialog(element, 'delete')">
+                  <mat-icon>undo</mat-icon>
+              </a>
+              <a class="pointer" *ngIf="!element.Disabled" style="color: rgb(168, 166, 173);" matTooltip="disable User" (click)="openDialog(element, 'delete')">
+                <mat-icon>disabled_visible</mat-icon>
+              </a>
+          </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+
+  </div>

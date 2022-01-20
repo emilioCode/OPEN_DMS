@@ -5,8 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { ITeam } from 'src/app/interfaces/iteam';
-import { CommonService } from 'src/app/services/common.service';
-import { ModalMessageService } from 'src/app/services/modal-message.service';
+import { CommonService, ModalMessageService, TeamService } from 'src/app/services/index';
 import { TeamDialogComponent } from './team-dialog/team-dialog.component';
 
 @Component({
@@ -36,6 +35,7 @@ export class TeamComponent implements OnInit {
   
   constructor(
     private commonService: CommonService, 
+    private teamService: TeamService, 
     private modalMessageService: ModalMessageService,
     public dialog: MatDialog
   ) { }
@@ -60,8 +60,7 @@ export class TeamComponent implements OnInit {
 
   getTeams(){
     const session = this.commonService.sessionStorage.get("user");
-    const data = `?entityid=${session.entityId}`;
-    this.teams$ =  this.commonService.getData("api/Teams", data)
+    this.teams$ =  this.teamService._get(session)
     this.teams$.subscribe(res => {
       if(res.success){
         this.setDataSource(res.data);

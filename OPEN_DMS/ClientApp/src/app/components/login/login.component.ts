@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IUser } from 'src/app/interfaces/iuser';
-import { CommonService } from 'src/app/services/common.service';
-import { ModalMessageService } from 'src/app/services/modal-message.service';
-import { UserService } from 'src/app/services/user.service';
+import { CommonService, ModalMessageService, UserService } from 'src/app/services/index';
 
 @Component({
   selector: 'app-login',

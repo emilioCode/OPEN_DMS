@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CONSTANT } from 'src/app/enums/CONSTANT';
 import { Entity } from 'src/app/classes/entity';
-import { CommonService } from 'src/app/services/common.service';
+import { CommonService } from 'src/app/services/index';
 
 @Component({
   selector: 'app-entity-dialog',
