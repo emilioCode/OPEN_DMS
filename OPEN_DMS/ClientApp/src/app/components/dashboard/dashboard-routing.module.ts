@@ -9,6 +9,7 @@ import { TeamComponent } from './team/team.component';
 import { TeamDialogComponent } from './team/team-dialog/team-dialog.component';
 import { UserComponent } from './user/user.component';
 import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
+import { FileGroupComponent } from './file-group/file-group.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, children:[
@@ -16,6 +17,7 @@ const routes: Routes = [
     { path: 'entity', component: EntityComponent },
     { path: 'team', component: TeamComponent },
     { path: 'user', component: UserComponent },
+    { path: 'file-group', component: FileGroupComponent }
   ]}
 ];
 
@@ -29,6 +31,7 @@ const routes: Routes = [
     EntityDialogComponent,
     TeamDialogComponent,
     UserDialogComponent,
+    FileGroupComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
