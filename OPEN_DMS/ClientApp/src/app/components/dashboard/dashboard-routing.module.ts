@@ -10,6 +10,7 @@ import { TeamDialogComponent } from './team/team-dialog/team-dialog.component';
 import { UserComponent } from './user/user.component';
 import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
 import { FileGroupComponent } from './file-group/file-group.component';
+import { ToobalComponent } from '../utilities/toobal/toobal.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, children:[
@@ -32,6 +33,7 @@ const routes: Routes = [
     TeamDialogComponent,
     UserDialogComponent,
     FileGroupComponent,
+    ToobalComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
