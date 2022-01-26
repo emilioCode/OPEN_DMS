@@ -15,10 +15,11 @@ namespace OPEN_DMS.Models.Data
         public int? teamId { get; set; }
         public string teamName { get; set; }
         public string userName { get; set; }
+        public string hashCode { get; set; }
         public string pathRoot { get; set; }
         public DateTime expirationDate { get; set; }
 
-        public CustomUser(int _id, string _name, string _accessLevel, int _entityId, string _entityName, int? _teamId, string _teamName, string _userName, string _pathRoot, DateTime _expirationDate)
+        public CustomUser(int _id, string _name, string _accessLevel, int _entityId, string _entityName, int? _teamId, string _teamName, string _userName, string _hashCode, string _pathRoot, DateTime _expirationDate)
         {
             this.id = _id;
             this.name = _name;
@@ -28,6 +29,7 @@ namespace OPEN_DMS.Models.Data
             this.teamId = _teamId;
             this.teamName = _teamName;
             this.userName = _userName;
+            this.hashCode = _hashCode;
             this.pathRoot = _pathRoot;
             this.expirationDate = _expirationDate;
         }   

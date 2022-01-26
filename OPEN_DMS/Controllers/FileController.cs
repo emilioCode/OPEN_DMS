@@ -36,7 +36,7 @@ namespace OPEN_DMS.Controllers
                 loginUser.UserAccount = userAccount;
                 loginUser.UserPassword = passwordAccount;
                 
-                var usersList = await UsersController.getUserListAsync(loginUser);
+                var usersList = await UsersController.getUserListAsync(loginUser, false);
                 usersList.ForEach(e =>
                 {
                     if (e.userName.Equals(loginUser.UserAccount))

@@ -1,0 +1,12 @@
+<mat-grid-list [cols]="cols" [rowHeight]="rowHeight">
+    <mat-grid-tile
+        *ngFor="let item of arrayList"
+        [colspan]="colspan"
+        [rowspan]="rowspan"
+        >
+        <div (click)="returnElement(item)">
+            <mat-icon class="item-center" matTooltip="{{ item.FileName + item.Extension + '\n' + item.InsertionDate.split('T')[0] }}">{{ item.icon }}</mat-icon>
+            <span class="block">{{ item.FileName.length > 10 ? item.FileName.substring(0,10)+'...': item.FileName }}</span>
+        </div>
+    </mat-grid-tile>
+  </mat-grid-list>

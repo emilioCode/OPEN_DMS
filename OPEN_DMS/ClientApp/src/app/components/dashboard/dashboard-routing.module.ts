@@ -11,6 +11,8 @@ import { UserComponent } from './user/user.component';
 import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
 import { FileGroupComponent } from './file-group/file-group.component';
 import { ToobalComponent } from '../utilities/toobal/toobal.component';
+import { GridListComponent } from '../utilities/grid-list/grid-list.component';
+import { ModalItemGridComponent } from '../utilities/modal-item-grid/modal-item-grid.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, children:[
@@ -34,6 +36,8 @@ const routes: Routes = [
     UserDialogComponent,
     FileGroupComponent,
     ToobalComponent,
+    GridListComponent,
+    ModalItemGridComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -44,6 +48,7 @@ const routes: Routes = [
     EntityDialogComponent,
     TeamDialogComponent,
     UserDialogComponent,
+    ModalItemGridComponent,
   ]
 })
 export class DashboardRoutingModule { }

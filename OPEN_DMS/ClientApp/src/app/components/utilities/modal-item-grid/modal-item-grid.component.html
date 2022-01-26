@@ -1,0 +1,12 @@
+<div class="item-center2" *ngIf="item != null">
+    <mat-icon class="item-center margin-15 size-icon" matTooltip="{{ item.FileName + item.Extension + '\n' + item.InsertionDate.split('T')[0] }}">{{ item.icon }}</mat-icon>
+    <span class="block">{{ item.FileName }} {{ '.' + item.Extension }}</span>
+    <p *ngIf="item.Size">Size: {{ item.Size }} KB</p>
+    <p *ngIf="item.InsertionDate">date: {{ item.InsertionDate.split('T')[0] }}</p>
+    <p *ngIf="item.DistinctDetail">DistinctDetail: {{ item.DistinctDetail }} </p>
+    <p *ngIf="item.CommentDetail">{{ item.CommentDetail }}</p>
+    <div class="example-button-row">
+        <button mat-stroked-button mat-dialog-close>Close</button>
+        <button mat-stroked-button color="primary" (click)="downloadFile()">Download</button>
+    </div>
+</div>
