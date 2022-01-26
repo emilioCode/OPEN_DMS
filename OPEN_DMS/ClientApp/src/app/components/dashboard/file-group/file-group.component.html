@@ -1,0 +1,33 @@
+<div class="container-dashboard">
+
+  <app-toobal
+    [title] = "'File Group'"
+    [iconTitle] = "'folder'"
+  >
+  </app-toobal>
+  
+
+  <form [formGroup]="formFiles" *ngIf="isAdministrator">
+    <mat-form-field appearance="legacy" class="with" >
+      <mat-label>Team</mat-label>
+      <mat-select placeholder="Select" formControlName="TeamId">
+        <mat-option value="">-- None --</mat-option>
+          <ng-container *ngIf="teams$ | async as item">
+              <mat-option *ngFor="let team of item.data" [value]="team.Id" >{{ team.TeamName }}</mat-option>
+          </ng-container>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+
+  <app-grid-list
+    [cols] = "'4'"
+    [rowHeight] = "'100px'"
+    [colspan]="1"
+    [rowspan]="2"
+    [arrayList]="files"
+    (clickEvent)="openModal($event)"
+  >
+  </app-grid-list>
+  
+</div>

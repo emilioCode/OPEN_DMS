@@ -16,7 +16,6 @@ namespace OPEN_DMS.Controllers
     public class UsersController : ControllerBase
     {
         private readonly OPEN_DMSContext _context;
-
         public UsersController(OPEN_DMSContext context)
         {
             _context = context;
@@ -130,6 +129,34 @@ namespace OPEN_DMS.Controllers
             return await _context.Users.Where(user => user.UserAccount == userAccount).FirstOrDefaultAsync();
         }
 
+        public static async Task<List<CustomUser>> getUserListAsync(User loginUser, bool hashType = true)
+        {
+            using (OPEN_DMSContext _context2 = new OPEN_DMSContext())
+            {
+                string hashString = hashType ? Security.getHash(loginUser.UserPassword, Security.hashType.MD5) : loginUser.UserPassword;
+                var users = (from user in _context2.Users
+                                   join team in _context2.Teams on user.TeamId equals team.Id
+                                   join entity in _context2.Entities on user.EntityId equals entity.Id
+                                   where user.UserAccount == loginUser.UserAccount
+                                   && user.UserPassword == hashString
+                                   && team.Id == user.TeamId && user.Disabled == false && ((team.Disabled == false && entity.Disabled == false) || user.AccessLevel == CONSTANT.ROOT)
+                                   select new CustomUser(
+                                     user.Id,
+                                     user.CompleteName,
+                                     user.AccessLevel,
+                                     user.EntityId,
+                                     entity.EntityName,
+                                     user.TeamId,
+                                     team.TeamName,
+                                     user.UserAccount,
+                                     user.UserPassword,
+                                     team.PathRoot,
+                                     user.ExpirationDate
+                                 )).ToListAsync();
+
+                return await users;
+            }
+        }
 
     }
 }

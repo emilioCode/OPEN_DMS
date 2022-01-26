@@ -1,12 +1,13 @@
 <div class="container-dashboard">
 
-    <mat-toolbar>
-      <span> <mat-icon>manage_accounts</mat-icon> Manage Accounts</span>
-      <div class="example-spacer"></div>
-      <button mat-stroked-button color="primary" (click)="openDialog(element, 'create')">
-        <span class="material-icons">add</span>
-      </button>
-    </mat-toolbar>
+    <app-toobal
+      [title] = "'Manage Accounts'"
+      [iconTitle] = "'manage_accounts'"
+      [colorButton] = "'primary'"
+      [iconButton] = "'add'"
+      (clickButton) = "openDialog(element, 'create')"
+    >
+    </app-toobal>
   
     <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">

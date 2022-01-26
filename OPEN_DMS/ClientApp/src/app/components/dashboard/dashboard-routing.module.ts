@@ -9,6 +9,10 @@ import { TeamComponent } from './team/team.component';
 import { TeamDialogComponent } from './team/team-dialog/team-dialog.component';
 import { UserComponent } from './user/user.component';
 import { UserDialogComponent } from './user/user-dialog/user-dialog.component';
+import { FileGroupComponent } from './file-group/file-group.component';
+import { ToobalComponent } from '../utilities/toobal/toobal.component';
+import { GridListComponent } from '../utilities/grid-list/grid-list.component';
+import { ModalItemGridComponent } from '../utilities/modal-item-grid/modal-item-grid.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, children:[
@@ -16,6 +20,7 @@ const routes: Routes = [
     { path: 'entity', component: EntityComponent },
     { path: 'team', component: TeamComponent },
     { path: 'user', component: UserComponent },
+    { path: 'file-group', component: FileGroupComponent }
   ]}
 ];
 
@@ -29,6 +34,10 @@ const routes: Routes = [
     EntityDialogComponent,
     TeamDialogComponent,
     UserDialogComponent,
+    FileGroupComponent,
+    ToobalComponent,
+    GridListComponent,
+    ModalItemGridComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -39,6 +48,7 @@ const routes: Routes = [
     EntityDialogComponent,
     TeamDialogComponent,
     UserDialogComponent,
+    ModalItemGridComponent,
   ]
 })
 export class DashboardRoutingModule { }
