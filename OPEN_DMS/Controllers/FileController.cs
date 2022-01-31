@@ -168,5 +168,211 @@ namespace OPEN_DMS.Controllers
             return Ok(response);
         }
 
+        #region DownloadFile - async
+        /*[HttpGet("[action]")]
+        public async Task<ActionResult> DownloadFile(string userAccount, string passwordAccount, string idFiles)
+        {
+            List<int> idDocuments = JSON.Parse<List<int>>(idFiles);
+            FileContentResult result = null;
+            List<object> objects = new();
+            genericJsonResponse response = new();
+            try
+            {
+                if (string.IsNullOrEmpty(userAccount) || string.IsNullOrEmpty(passwordAccount))
+                {
+                    response.message = "Please check the userAccount and/or the passwordAccount. Try again or contact to Administrator.";
+                }
+                else
+                {
+                    CustomUser userFinal = null;
+                    User loginUser = new();
+                    loginUser.UserAccount = userAccount;
+                    loginUser.UserPassword = passwordAccount;
+
+                    var usersList = await UsersController.getUserListAsync(loginUser, false);
+                    usersList.ForEach(e =>
+                    {
+                        if (e.userName.Equals(loginUser.UserAccount))
+                        {
+                            if (DateTime.Today <= e.expirationDate)
+                            {
+                                response.success = true;
+                                userFinal = e;
+                            }
+                            else
+                            {
+                                response.message = "The UserAccount has expired. Please contact with Technical Support.";
+                            }
+                        }
+                    });
+
+                    if (userFinal == null)
+                    {
+                        response.message = "Please check the user and password and try it again.";
+                    }
+                    else
+                    {
+                        idDocuments.ForEach(async document =>
+                       {
+                           var file = await _context.Documents
+                           .Where(f => f.Id == document && f.Disabled == false && f.EntityId == userFinal.entityId
+                           && (f.TeamId == userFinal.teamId || userFinal.accessLevel == CONSTANT.ADMINISTRATOR || userFinal.accessLevel == CONSTANT.ROOT)).SingleOrDefaultAsync();
+                           if (file is not null)
+                           {
+                               string fileName = $"{file.FileName}.{file.Extension}";
+                               string filePath = $"{file.PathAlternative}\\{fileName}";
+                               byte[] data = await System.IO.File.ReadAllBytesAsync(filePath);
+                               Mimetype contentType = await MimeTypes.getExtension(file.Extension);// MimeTypes.Dictionary[file.Extension];
+                               
+                               result = new FileContentResult(data, contentType.MimeType1)//"image/jpeg")//"application/octet-stream")
+                               {
+                                   FileDownloadName = fileName
+                               };
+
+                               objects.Add( new
+                               {
+                                   id = file.Id,
+                                   FileContents = result.FileContents,
+                                   ContentType = result.ContentType,
+                                   FileDownloadName = result.FileDownloadName,
+                                   LastModified = result.LastModified,
+                                   EntityTag = result.EntityTag,
+                                   EnableRangeProcessing = result.EnableRangeProcessing
+                               });
+                           }
+                       });
+                        response.data = objects;
+                        #region Dont touch until end
+                        //var data = await System.IO.File.ReadAllBytesAsync("D:\\OPEN_DMS_Storage\\1638370138993_012622002442.jpg");
+                        ///
+                        //result = new FileContentResult(data, "image/jpeg")//"application/octet-stream")
+                        //{
+                        //    FileDownloadName = "1638370138993_012622002442.jpg"
+                        //};
+                        ////return result;
+                        #endregion Dont touch until end
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+                return BadRequest(response);
+                //return new FileContentResult(null, "application/octet-stream");
+            }
+            return Ok(response);
+            //return result;
+        }*/
+        #endregion DownloadFile - async
+
+        [HttpGet("[action]")]
+        public ActionResult DownloadFile(string userAccount, string passwordAccount, string idFiles)
+        {
+            List<int> idDocuments = JSON.Parse<List<int>>(idFiles);
+            FileContentResult result = null;
+            List<object> objects = new();
+            genericJsonResponse response = new();
+            try
+            {
+                if (string.IsNullOrEmpty(userAccount) || string.IsNullOrEmpty(passwordAccount))
+                {
+                    response.message = "Please check the userAccount and/or the passwordAccount. Try again or contact to Administrator.";
+                }
+                else
+                {
+                    CustomUser userFinal = null;
+                    User loginUser = new();
+                    loginUser.UserAccount = userAccount;
+                    loginUser.UserPassword = passwordAccount;
+
+                    string hashString =  loginUser.UserPassword;
+                    var usersList = (from user in _context.Users
+                                     join team in _context.Teams on user.TeamId equals team.Id
+                                     join entity in _context.Entities on user.EntityId equals entity.Id
+                                     where user.UserAccount == loginUser.UserAccount
+                                     && user.UserPassword == hashString
+                                     && team.Id == user.TeamId && user.Disabled == false && ((team.Disabled == false && entity.Disabled == false) || user.AccessLevel == CONSTANT.ROOT)
+                                     select new CustomUser(
+                                       user.Id,
+                                       user.CompleteName,
+                                       user.AccessLevel,
+                                       user.EntityId,
+                                       entity.EntityName,
+                                       user.TeamId,
+                                       team.TeamName,
+                                       user.UserAccount,
+                                       user.UserPassword,
+                                       team.PathRoot,
+                                       user.ExpirationDate
+                                   )).ToList();
+
+                    usersList.ForEach(e =>
+                    {
+                        if (e.userName.Equals(loginUser.UserAccount))
+                        {
+                            if (DateTime.Today <= e.expirationDate)
+                            {
+                                response.success = true;
+                                userFinal = e;
+                            }
+                            else
+                            {
+                                response.message = "The UserAccount has expired. Please contact with Technical Support.";
+                            }
+                        }
+                    });
+
+                    if (userFinal == null)
+                    {
+                        response.message = "Please check the user and password and try it again.";
+                    }
+                    else
+                    {
+                        idDocuments.ForEach( document =>
+                        {
+                            var file = _context.Documents
+                            .Where(f => f.Id == document && f.Disabled == false && f.EntityId == userFinal.entityId
+                            && (f.TeamId == userFinal.teamId || userFinal.accessLevel == CONSTANT.ADMINISTRATOR || userFinal.accessLevel == CONSTANT.ROOT)).SingleOrDefault();
+
+                            if (file is not null)
+                            {
+                                string fileName = $"{file.FileName}.{file.Extension}";
+                                string filePath = $"{file.PathAlternative}\\{fileName}";
+                                byte[] data =  System.IO.File.ReadAllBytes(filePath);
+                               
+                                Mimetype contentType =  _context.Mimetypes.Where(mt => mt.Extension == file.Extension.ToLower()).FirstOrDefault();
+                                if (contentType is null) contentType =  _context.Mimetypes.Where(mt => mt.Extension == "bin").FirstOrDefault();
+
+                                result = new FileContentResult(data, contentType.MimeType1)
+                                {
+                                    FileDownloadName = fileName
+                                };
+
+                                objects.Add(new
+                                {
+                                    id = file.Id,
+                                    FileContents = result.FileContents,
+                                    ContentType = result.ContentType,
+                                    FileDownloadName = result.FileDownloadName,
+                                    LastModified = result.LastModified,
+                                    EntityTag = result.EntityTag,
+                                    EnableRangeProcessing = result.EnableRangeProcessing
+                                });
+                            }
+                        });
+                        response.data = objects;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
     }
 }

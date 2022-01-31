@@ -59,7 +59,7 @@ export class CommonService {
   }
 
   // Http Services
-  getData(api: string, data: string): Observable<any> {
+  getData(api: string, data: string = ''): Observable<any> {
     return this.http.get(this.baseUrl + api + data);
   }
   
