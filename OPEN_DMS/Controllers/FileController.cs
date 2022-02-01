@@ -82,7 +82,7 @@ namespace OPEN_DMS.Controllers
         }
         // POST: api/File
         [HttpPost]
-        public async Task<ActionResult> PostFiles(string userAccount, string passwordAccount, string commentDetail, string distinctDetail, [FromForm] List<IFormFile> files)
+        public async Task<ActionResult> PostFiles(string userAccount, string passwordAccount, int? teamId, string commentDetail, string distinctDetail, [FromForm] List<IFormFile> files)
         {
             genericJsonResponse response = new();
             try
@@ -98,7 +98,7 @@ namespace OPEN_DMS.Controllers
                     loginUser.UserAccount = userAccount;
                     loginUser.UserPassword = passwordAccount;
 
-                    var usersList = await UsersController.getUserListAsync(loginUser);
+                    var usersList = await UsersController.getUserListAsync(loginUser, false);
                     usersList.ForEach(e =>
                     {
                         if (e.userName.Equals(loginUser.UserAccount))
@@ -142,7 +142,7 @@ namespace OPEN_DMS.Controllers
                                 document.Size = (float)size; /*KB*/
                                 document.PathAlternative = userFinal.pathRoot;
                                 document.EntityId = userFinal.entityId;
-                                document.TeamId = (int)userFinal.teamId;
+                                document.TeamId = (teamId is not null) ? (int)teamId : (int)userFinal.teamId;
                                 document.IdUser = userFinal.id;
                                 document.CommentDetail = commentDetail;
                                 document.DistinctDetail = distinctDetail;
