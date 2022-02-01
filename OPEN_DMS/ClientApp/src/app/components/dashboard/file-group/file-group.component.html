@@ -18,7 +18,24 @@
       </mat-select>
     </mat-form-field>
   </form>
-
+  
+  <div>
+    <!-- 
+      HTML Plain
+      <label for="files">Select files: </label>
+    <input type="file" id="files" name="files" multiple [(ngModel)]="document"
+    (change)="handleFileInput($event.target.files)"><br><br>
+    <input type="button" value="Subir" (click)="postFile()"> 
+  -->
+    <form [formGroup]="formFilesUpload" *ngIf="isAdministrator" (ngSubmit)="postFile()">
+      <label for="files">Select files: </label>
+      <input type="file" id="files" name="files" multiple formControlName="documentControl"
+      (change)="handleFileInput($event.target.files)" ><br><br>
+      <button type="submit" [disabled]="formFilesUpload.invalid" mat-raised-button color="primary">Submit</button>
+      <button type="reset" mat-raised-button (click)="formFilesUpload.reset()" *ngIf="!formFilesUpload.invalid">Cancel</button>
+    </form>
+  </div>
+  <!---->
 
   <app-grid-list
     [cols] = "'4'"
