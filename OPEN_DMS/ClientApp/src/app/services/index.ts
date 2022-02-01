@@ -4,3 +4,4 @@ export { EntityService } from './entity.service';
 export { ModalMessageService } from './modal-message.service';
 export { TeamService } from './team.service';
 export * from './file-group.service';
+export * from './file-stream.service'
