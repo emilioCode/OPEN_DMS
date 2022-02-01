@@ -53,6 +53,14 @@ CREATE TABLE DOCUMENTS(
     disabled boolean NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE MIMEtypes (
+	id int NOT NULL AUTO_INCREMENT,
+    extension varchar(5) NOT NULL,
+    kinf_of_document text NULL,
+    mime_type varchar(100) NOT NULL,
+    PRIMARY KEY (id)
+);
 /*
 Example:
 Scaffold-DbContext "connection-string" MySql.EntityFrameworkCore -OutputDir Sakila -Schemas sakila,world -f
