@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OPEN_DMS.Models;
+using OPEN_DMS.Utils;
 
 namespace OPEN_DMS
 {
@@ -21,6 +22,11 @@ namespace OPEN_DMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ConnectionString.server = Configuration.GetConnectionString("Server");
+            ConnectionString.database = Configuration.GetConnectionString("Database");
+            ConnectionString.user = Configuration.GetConnectionString("User");
+            ConnectionString.password = Configuration.GetConnectionString("Password");
+
             services.AddControllersWithViews();
 
             // to avoid the format propierties wthe the controller return the response
