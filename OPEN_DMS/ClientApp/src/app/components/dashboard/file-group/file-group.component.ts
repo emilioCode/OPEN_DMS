@@ -37,11 +37,9 @@ export class FileGroupComponent implements OnInit {
     if(this.isAdministrator){
       this.teams$ = this.teams._get(this.session);
       this.initFormFiles();
-      this.initFormFilesUpload();
     }
+    this.initFormFilesUpload();
     this.getFiles(this.session);
-
-
   }
 
   openModal = (file) =>{
@@ -79,13 +77,6 @@ export class FileGroupComponent implements OnInit {
   }
 
   getIcon(extension: string): string {
-    // picture_as_pdf
-    // description
-    // text_snippet
-    // file_present
-    // insert_photo
-    // photo_filter
-    // help_outline
     let icon: string = '';
     switch (extension.toLowerCase()) {
       case "pdf":
@@ -94,8 +85,47 @@ export class FileGroupComponent implements OnInit {
       case "jpg":
         icon = 'insert_photo';
         break;
+      case "png":
+        icon = 'insert_photo';
+        break;
+      case "jpeg":
+        icon = 'insert_photo';
+        break; 
+      case "jfif":
+        icon = 'insert_photo';
+        break; 
+      case "doc":
+        icon = 'description';
+        break; 
+      case "pps":
+        icon = 'description';
+        break;
+      case "ppt":
+        icon = 'description';
+        break;
+      case "pptx":
+        icon = 'description';
+        break;
+      case "xls":
+        icon = 'description';
+        break;
+      case "xlsx":
+        icon = 'description';
+        break;
+      case "docx":
+        icon = 'description';
+        break; 
+      case "csv":
+        icon = 'description';
+        break; 
+      case "tif":
+        icon = 'photo_filter';
+        break;  
+      case "gif":
+        icon = 'photo_filter';
+        break;       
       default:
-        icon = 'help_outline';
+        icon = 'file_present';
         break;
     }
     return icon;
@@ -127,7 +157,7 @@ export class FileGroupComponent implements OnInit {
     this.fileToUpload.forEach(element => {
       formData.append("files", element, element.name);
     });
-    const teamId = this.formFiles.controls.TeamId.value? this.formFiles.controls.TeamId.value: '' ;
+    const teamId = (this.formFiles && this.formFiles.controls.TeamId.value)? this.formFiles.controls.TeamId.value: '' ;
     const str = `api/File?userAccount=${this.session.userName}&passwordAccount=${this.session.hashCode}&teamId=${teamId}&commentDetail=&distinctDetail=`;
     this.commonService.postData(str, formData).subscribe(res => {
       this.modalMessageService.error(res.message);
