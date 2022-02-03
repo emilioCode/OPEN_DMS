@@ -5,7 +5,7 @@
     [iconTitle] = "'folder'"
   >
   </app-toobal>
-  
+  <br/>
 
   <form [formGroup]="formFiles" *ngIf="isAdministrator">
     <mat-form-field appearance="legacy" class="with" >
@@ -27,7 +27,7 @@
     (change)="handleFileInput($event.target.files)"><br><br>
     <input type="button" value="Subir" (click)="postFile()"> 
   -->
-    <form [formGroup]="formFilesUpload" *ngIf="isAdministrator" (ngSubmit)="postFile()">
+    <form [formGroup]="formFilesUpload" (ngSubmit)="postFile()"><!--*ngIf="isAdministrator" -->
       <label for="files">Select files: </label>
       <input type="file" id="files" name="files" multiple formControlName="documentControl"
       (change)="handleFileInput($event.target.files)" ><br><br>
