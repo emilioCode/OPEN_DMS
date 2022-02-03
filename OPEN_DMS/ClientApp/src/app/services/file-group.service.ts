@@ -13,7 +13,6 @@ export class FileGroupService implements Functionable {
   ) { }
 
   _get(session: any, teamId: number = null): Observable<any> {
-    // https://localhost:44313/api/File?userAccount=root&passwordAccount=123456&teamId=1
     const extra = teamId? `&teamId=${teamId}`:'';
     const data = `?userAccount=${(session.userName)}&passwordAccount=${session.hashCode}${extra}`;
     return this.commonService.getData("api/File", data);

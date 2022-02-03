@@ -13,13 +13,14 @@ import { FileGroupComponent } from './file-group/file-group.component';
 import { ToobalComponent } from '../utilities/toobal/toobal.component';
 import { GridListComponent } from '../utilities/grid-list/grid-list.component';
 import { ModalItemGridComponent } from '../utilities/modal-item-grid/modal-item-grid.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, children:[
     { path: '', component: HomeComponent },
-    { path: 'entity', component: EntityComponent },
-    { path: 'team', component: TeamComponent },
-    { path: 'user', component: UserComponent },
+    { path: 'entity', component: EntityComponent, canActivate: [ AuthGuard ] },
+    { path: 'team', component: TeamComponent, canActivate: [ AuthGuard ] },
+    { path: 'user', component: UserComponent, canActivate: [ AuthGuard ] },
     { path: 'file-group', component: FileGroupComponent }
   ]}
 ];

@@ -1,7 +1,7 @@
 <div class="item-center2" *ngIf="item != null">
     <mat-icon class="item-center margin-15 size-icon" matTooltip="{{ item.FileName + item.Extension + '\n' + item.InsertionDate.split('T')[0] }}">{{ item.icon }}</mat-icon>
-    <span class="block">{{ item.FileName }} {{ '.' + item.Extension }}</span>
-    <p *ngIf="item.Size">Size: {{ item.Size }} KB</p>
+    <span class="block">{{ item.FileName + '.' + item.Extension }}</span>
+    <p *ngIf="item.Size">Size: {{  item.Size*1000 > 1000? item.Size + ' MB': item.Size*1000 + ' KB' }} </p>
     <p *ngIf="item.InsertionDate">date: {{ item.InsertionDate.split('T')[0] }}</p>
     <p *ngIf="item.DistinctDetail">DistinctDetail: {{ item.DistinctDetail }} </p>
     <p *ngIf="item.CommentDetail">{{ item.CommentDetail }}</p>
