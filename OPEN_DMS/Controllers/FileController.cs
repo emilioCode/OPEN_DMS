@@ -122,6 +122,7 @@ namespace OPEN_DMS.Controllers
                     }
                     else
                     {
+                        teamId = (userFinal.accessLevel == CONSTANT.ROOT || userFinal.accessLevel == CONSTANT.ADMINISTRATOR)? teamId: null;
                         List<Document> documents = new();
                         if (files.Count > 0)
                         {

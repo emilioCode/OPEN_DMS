@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,6 +20,8 @@ namespace OPEN_DMS
 
         public IConfiguration Configuration { get; }
 
+        Models.Data.appOrigins jsonfile;
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -27,6 +30,9 @@ namespace OPEN_DMS
             ConnectionString.user = Configuration.GetConnectionString("User");
             ConnectionString.password = Configuration.GetConnectionString("Password");
 
+            string streamFile = System.IO.File.ReadAllText("appOrigins.json");
+            jsonfile = JSON.Parse<Models.Data.appOrigins>(streamFile);
+            
             services.AddControllersWithViews();
 
             // to avoid the format propierties wthe the controller return the response
@@ -66,6 +72,14 @@ namespace OPEN_DMS
             }
 
             app.UseRouting();
+
+            //app.UseCors(x => 
+            //    x.AllowAnyOrigin()
+            //);
+       
+            app.UseCors(x =>
+                x.WithOrigins(jsonfile.AllowedOrigins)
+            );
 
             app.UseEndpoints(endpoints =>
             {
