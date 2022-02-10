@@ -56,7 +56,7 @@ CREATE TABLE DOCUMENTS(
 
 CREATE TABLE MIMEtypes (
 	id int NOT NULL AUTO_INCREMENT,
-    extension varchar(5) NOT NULL,
+    extension varchar(6) NOT NULL,
     kinf_of_document text NULL,
     mime_type varchar(100) NOT NULL,
     PRIMARY KEY (id)
@@ -67,3 +67,4 @@ Scaffold-DbContext "connection-string" MySql.EntityFrameworkCore -OutputDir Saki
 
 Scaffold-DbContext "server=127.0.0.1;uid=root;pwd=123456;database=OPEN_DMS" MySql.EntityFrameworkCore -OutputDir Models
 */
+-- 9b64c1cf311710f798987a74f6fd1e92=root
