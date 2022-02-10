@@ -17,6 +17,7 @@ namespace OPEN_DMS.Controllers
     public class FileController : ControllerBase
     {
         private readonly OPEN_DMSContext _context;
+        private OperatingSystem os_info = System.Environment.OSVersion;
 
         public FileController(OPEN_DMSContext context)
         {
@@ -128,7 +129,7 @@ namespace OPEN_DMS.Controllers
                             {
                                 DateTime now = DateTime.Now;
                                 string fileName = Path.GetFileNameWithoutExtension(file.FileName) + "_" + now.ToString("MMddyyHHmmss") + Path.GetExtension(file.FileName);
-                                string filePath = userFinal.pathRoot + "\\" + fileName;
+                                string filePath = userFinal.pathRoot + (os_info.Platform.ToString().ToUpper() == "UNIX"? "/": "\\") + fileName;
                                 using (var stream = System.IO.File.Create(filePath))
                                 {
                                     await file.CopyToAsync(stream);
@@ -337,8 +338,9 @@ namespace OPEN_DMS.Controllers
 
                             if (file is not null)
                             {
+
                                 string fileName = $"{file.FileName}.{file.Extension}";
-                                string filePath = $"{file.PathAlternative}\\{fileName}";
+                                string filePath = $"{file.PathAlternative}{(os_info.Platform.ToString().ToUpper() == "UNIX" ? "/" : "\\")}{fileName}";
                                 byte[] data =  System.IO.File.ReadAllBytes(filePath);
                                
                                 Mimetype contentType =  _context.Mimetypes.Where(mt => mt.Extension == file.Extension.ToLower()).FirstOrDefault();

@@ -19,7 +19,7 @@ namespace OPEN_DMS.Utils
                     mimeType = await db.Mimetypes.Where(mt => mt.Extension == extension.ToLower()).FirstOrDefaultAsync();
                     if(mimeType is null) mimeType = await db.Mimetypes.Where(mt => mt.Extension == "bin").FirstOrDefaultAsync();
                 }
-                catch (Exception exception)
+                catch 
                 {
                     mimeType = await db.Mimetypes.Where(mt => mt.Extension == "bin").FirstOrDefaultAsync();
                 }
